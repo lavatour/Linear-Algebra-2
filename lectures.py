@@ -10,6 +10,165 @@ class Lectures():
     def __init__(self):
         x = 1
 
+    def lecture65(self):
+        """Create reduced-rank matrices using matrix multiplication
+        create a 10x10 matrix with rnak = 4 (using matrix multiplication)
+        Generalize the procedure to create any MxN matrix with rank r"""
+
+
+    def lecture64(self):
+        """Rank of added and matrices"""
+        print("rank of added matrices")
+        A = [[1, 2, 3],[3, 4, 1],[5, 9, 1]]
+        B = [[0, 3, 5],[1, 0, 4],[3, 3, 0]]
+        C = A + B
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[1, 1, 1],[2, 2, 2],[3, 3, 0]]
+        B = [[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+        C = A + B
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[1, 2, 0],[3, 4, 0],[5, 9, 0]]
+        B = [[0, 0, 5],[0, 0, 4],[0, 0, 1]]
+        C = A + B
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[-1, -4, 2],[-4, 2, -1],[9, 4, -3]]
+        B = [[1, 4, 0],[4, -2, 0],[-9, -4, 0]]
+        C = A + B
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        print("rank of multiplied matrices")
+        A = [[1, 2, 3],[3, 4, 1],[5, 9, 1]]
+        B = [[0, 3, 5],[1, 0, 4],[3, 3, 0]]
+        C = MatrixMath.matMult(self, A, B)
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[1, 1, 1],[2, 2, 2],[3, 3, 0]]
+        B = [[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+        C = MatrixMath.matMult(self, A, B)
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[1, 2, 0],[3, 4, 0],[5, 9, 0]]
+        B = [[0, 0, 5],[0, 0, 4],[0, 0, 1]]
+        C = MatrixMath.matMult(self, A, B)
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+        A = [[-1, -4, 2],[-4, 2, -1],[9, 4, -3]]
+        B = [[1, 4, 0],[4, -2, 0],[-9, -4, 0]]
+        C = MatrixMath.matMult(self, A, B)
+        print(f"rank A: {MatrixMath.matrixRank(self, A, )}")
+        print(f"rank B: {MatrixMath.matrixRank(self, B, )}")
+        print(f"rank C: {MatrixMath.matrixRank(self, C, )}")
+        print()
+
+
+    def lecture63(self):
+        """Methods to compute renk
+        1. Count the number of columns in a linearly independent set.
+        2. Apply row reduction to reduce matrix to echelon form and count number of pivots.
+        3. Compute the singular value decomposition and count the number of non-zero singular values.
+        4. Compute the eigendecomposition and count the number of non-zero eigenvalues.
+        """
+        m,n = 4, 6
+        # Create a random matrix
+        A = np.random.randn(m, n)
+        MatrixMath.printMatrix(self, A)
+
+        # What is the largest possible rank?
+        rank = np.linalg.matrix_rank(A)
+        print(f"rank = {rank}")
+
+        #Make last column same as second to last column.
+        #No change in rank
+        B = A
+        B[:, -1] = B[:, -2]
+        MatrixMath.printMatrix(self, B)
+        rank = np.linalg.matrix_rank(B)
+        print(f"rank = {rank}")
+
+        #Make last row same as next to last row.
+        #Rank ruduced by 1.
+        B = A
+        B[-1,:] = B[-2,:]
+        MatrixMath.printMatrix(self, B)
+        rank = np.linalg.matrix_rank(B)
+        print(f"rank = {rank} \n")
+
+        A = np.random.randn(m, m)
+        B = A
+        print("A")
+        MatrixMath.printMatrix(self, A)
+        print(f"rank = {np.linalg.matrix_rank(A)} \n")
+
+        #Column 3 = column 4 in column B
+        B[:, -1] = B[:, -2]
+        print("B")
+        MatrixMath.printMatrix(self, B)
+        print(f"rank = {np.linalg.matrix_rank(B)} \n")
+
+        print(f"B =")
+        #noise level: add small amount of noise to reduced rank matrix
+        noiseLevel = 0.000000000000001
+
+        #add noise to matrix B
+        B = B + noiseLevel*np.random.randn(m,m)
+        MatrixMath.printMatrix(self, B)
+        print(f"rank = {np.linalg.matrix_rank(B)} \n")
+
+
+    def lecture62(self):
+        """Rank give information about the amount of information contained in a matrix.
+        6 Things to know about rank
+        1. r or rank(A). A single number for a matrix.
+            rank is a single non-negative integer. Related to the dimension of a matrix.
+        2. max(r) = min(m,n). Max rank is the smaller of number of rows or columns.
+            r is an element of N, s.t. (such that) 0<= r <= min{m,n}
+        3. rank is a property of the entire matrix.
+            No such thing as the rank of the column space or the row space.
+        4. Max rank(A) mxm = m  "Full rank matrix" if less Degenerate, Singular, Non invertible matrix
+           max rank(A) m>n = n  "Full column rank"
+           max rank(A) m<n = m  "full row rank matrix
+           If not full then it is "Degenerate"  "Rank Deficient"  "Reduced Rank" Low rank"
+        5. Rank = dimensionality of information in the matrix.
+        6. Rank One def: is the largest number of columns or rows that can form a linearly independent set.
+        """
+
+    def lecture61New(self):
+        """Matrix Division
+        1. Dadamard element by element division"""
+        A = MatrixMath.randomMatrix(self, 3, 3, -10, 10, int)
+        B = MatrixMath.randomMatrix(self, 3, 3, 1, 10 , int)
+        C = MatrixMath.hadamarDivision(self, A, B)
+        MatrixMath.printMatrix(self, A)
+        print()
+        MatrixMath.printMatrix(self, B)
+        print()
+        MatrixMath.printMatrix(self, C)
+
+
     def lecture60New(self):
         """Matrix asymmetry index
         1. Return a measure of how symmetric a matrix is.

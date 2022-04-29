@@ -176,7 +176,8 @@ class MatrixMath():
         return A
 
     def symmetricMatricFromA(self, A):
-        """S = (A + A_transpose) / 2"""
+        """Returns the symmetric part of matrix A as defined by:
+        S = (A + A_transpose) / 2"""
         S = (A + MatrixMath.transpose(self, A))/2
         return S
 
@@ -190,7 +191,8 @@ class MatrixMath():
         return A
 
     def skewSymmetricMatrixFromA(self, A):
-        """K = A - A_transpose"""
+        """Returns the asymmetric part of matrix A as defined by:
+        K = A - A_transpose"""
         K = (A - MatrixMath.transpose(self, A)) / 2
         return K
 
@@ -414,6 +416,20 @@ class MatrixMath():
         #C = np.matrix(C)
         return C
 
+    def hadamarDivision(self, A, B):
+        """Element by element division"""
+        C = []
+        [rowsA, colsA] = MatrixMath.size(self, A)
+        [rowsB, colsB] = MatrixMath.size(self, B)
+        if [rowsA, colsA] != [rowsB, colsB]:
+            print("Hadamar division impossible, matrices A and B are of different sizes.")
+            return
+        for row in range(rowsA):
+            C.append([])
+            for col in range(colsA):
+                C[row].append((A[row][col] / B[row][col]))
+        return C
+
     def outerProduct(self, A, B):
         """Outer product A * B^T """
         T = MatrixMath.transpose(self, B)
@@ -625,6 +641,9 @@ class MatrixMath():
         asymmetry = MatrixMath.norm(self, A_tilda) / MatrixMath.norm(self, A)
         return asymmetry
 
+    def matrixRank(self, A):
+        rank = np.linalg.matrix_rank(A)
+        return rank
 
     # def hermitianTranspose(self, C):
 
