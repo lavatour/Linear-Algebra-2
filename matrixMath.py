@@ -175,6 +175,11 @@ class MatrixMath():
                         A[row][col] = random.randint(minVal, maxVal)
         return A
 
+    def symmetricMatricFromA(self, A):
+        """S = (A + A_transpose) / 2"""
+        S = (A + MatrixMath.transpose(self, A))/2
+        return S
+
     def symetricMatrix(self, size, minVal, maxVal, intOrFloat):
         A = np.zeros((size, size), intOrFloat)
         for row in range(size):
@@ -183,6 +188,11 @@ class MatrixMath():
                     A[row][col] = random.randint(minVal, maxVal)
                     A[col][row] = A[row][col]
         return A
+
+    def skewSymmetricMatrixFromA(self, A):
+        """K = A - A_transpose"""
+        K = (A - MatrixMath.transpose(self, A)) / 2
+        return K
 
     def skewSymmetricMatrix(self, size, minVal, maxVal, intOrFloat):
         A = np.zeros((size, size), intOrFloat)
@@ -608,6 +618,12 @@ class MatrixMath():
         ATilda = (A - ATranspose) / 2"""
         A_transpose = MatrixMath.transpose(self, A)
         A_tilda = (A - A_transpose)/2
+        return A_tilda
+
+    def asymmetryIndex(self, A):
+        A_tilda = MatrixMath.matrixTilda(self, A)
+        asymmetry = MatrixMath.norm(self, A_tilda) / MatrixMath.norm(self, A)
+        return asymmetry
 
 
     # def hermitianTranspose(self, C):

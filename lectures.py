@@ -11,11 +11,53 @@ class Lectures():
         x = 1
 
     def lecture60New(self):
-        """Matrix asymmetry indes
+        """Matrix asymmetry index
         1. Return a measure of how symmetric a matrix is.
         2. Create a skew-symmetric matrix"""
-        sM = MatrixMath.skewSymmetricMatrix(self, 3, -5, 5, "int")
-        MatrixMath.printMatrix(self, sM)
+        A = MatrixMath.randomMatrix(self, 3, 3, -5, 5, int)
+        A = MatrixMath.symetricMatrix(self, 3, -5, 5, int)
+        A = MatrixMath.skewSymmetricMatrix(self, 3, -5, 5, int)
+        #MatrixMath.printMatrix(self, A)
+        #print(MatrixMath.norm(self, A))
+        #print(MatrixMath.matrixTilda(self,  A))
+        asymmetry = MatrixMath.asymmetryIndex(self, A)
+        #print(f"Asymmetry = \n {asymmetry} \n \n")
+
+        """Create matrix with particular matrix index
+        1. Make symmetric matrix; S
+        2. Make asymmetrix matrix; K
+        3. Generate a ranging from 0 to 1.
+        4. Multiply S by a and K by (a-1)
+        5. 
+        """
+        asymmetry_index = []
+        for i in range (11):
+            a = i/10
+            S = (1-a)*MatrixMath.symetricMatrix(self, 3, 0.0, 10.0, float)
+            K = (a)*MatrixMath.skewSymmetricMatrix(self, 3, 0.0, 10.0, float)
+            A = S + K
+            asymmetry = MatrixMath.asymmetryIndex(self, A)
+            asymmetry_index.append([a, asymmetry])
+        print(f"assymetry = {asymmetry_index}")
+
+        A = MatrixMath.randomMatrix(self, 3, 3, -10, 10, int)
+        MatrixMath.printMatrix(self, A)
+        print()
+        S = MatrixMath.symmetricMatricFromA(self, A)
+        MatrixMath.printMatrix(self, S)
+        print()
+
+        K = MatrixMath.skewSymmetricMatrixFromA(self, A)
+        MatrixMath.printMatrix(self, K)
+
+        Ai = []
+        for i in range (11):
+            p = i/10
+            C = p*K + (1-p)*S
+            asymmetry = MatrixMath.asymmetryIndex(self, C)
+            Ai.append([p, asymmetry])
+        print(Ai)
+
 
     def lecture59New(self):
         """Conditions for a self-adjoint operator.
