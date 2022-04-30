@@ -122,7 +122,7 @@ class MatrixMath():
                 if numTyp == int:
                     A[row][col] = random.randint(minVal, maxVal)
                 if numTyp == float:
-                    A[row][colb] = random.randint(minVal, maxVal) * random.random()
+                    A[row][col] = random.randint(minVal, maxVal) * random.random()
         return A
 
     def complexMatrix(self, rows, cols, rMin, rMax, iMin, iMax, numTyp):
@@ -263,6 +263,21 @@ class MatrixMath():
         for row in range(size):
             A[row][row] = diag
         return A
+
+    def rankReducingMatrix(self, size, rank):
+        """Reduce a matrix from maximum rank size to maximum rank "rank"""
+        A = np.zeros((size, size))
+        for row in range(size):
+            for col in range(size):
+                if col < rank:
+                    A[row][col] = random.randint(-10, 10)
+        return A
+
+    def randMatrixRowColRank(self, size, rank, min, max, dataType = int):
+        A = MatrixMath.randomMatrix(self, size, rank, -5, 5, int)
+        B = MatrixMath.randomMatrix(self, rank, size, -5, 5, int)
+        C = MatrixMath.matMult(self, A, B)
+        return C
 
 
     """MATRIX OPERATIONS"""

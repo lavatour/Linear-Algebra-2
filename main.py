@@ -11,5 +11,5 @@ matrix = MatrixMath()
 lectures = Lectures()
 
 
-lectures.lecture65()
+lectures.lecture66()
 

@@ -1,4 +1,6 @@
 import math
+import random
+
 import numpy as np
 
 from matrixMath import MatrixMath
@@ -10,11 +12,56 @@ class Lectures():
     def __init__(self):
         x = 1
 
+    def lecture66(self):
+        """Scalar multiplication and rank
+        1. test whether matrix rank is invariant to scalar multiplication
+        2. create 2 matrices: full rank R and a ruduced rank F, (both random)
+        3. create scalar l
+        4. print ranks of F, R l*f, l(R
+        5. check wheter rank(l*F) == l*rank(F)
+        """
+
+        # 2. create 2 matrices: full rank R and a ruduced rank F, (both random)
+        F = MatrixMath.randomMatrix(self, 3, 3, -5, 5, int)
+        R = MatrixMath.randMatrixRowColRank(self, 3, 2, -5, 5, int)
+        print("R =")
+        MatrixMath.printMatrix(self, R)
+
+        # 3. create scalar l
+        l = random.randint(1, 10)
+        print(f"l = {l}")
+        lR = MatrixMath.scalarMultiplication(self, l, R)
+
+        # 4 print ranks of F, R, l*F, l*rand(F)
+        print(f"F rank = {MatrixMath.matrixRank(self, F)}")
+        print(f"R rank = {MatrixMath.matrixRank(self, R)}")
+        print(f"rank(lR) = {MatrixMath.matrixRank(self, lR)}")
+        print(f"l*R rank(R) = {l * MatrixMath.matrixRank(self, R)}")
+
+
+
     def lecture65(self):
         """Create reduced-rank matrices using matrix multiplication
-        create a 10x10 matrix with rnak = 4 (using matrix multiplication)
+        Create a 10x10 matrix with rnak = 4 (using matrix multiplication)
         Generalize the procedure to create any MxN matrix with rank r"""
+        A = MatrixMath.randomMatrix(self, 10, 10, -10, 10, int)
+        B = MatrixMath.rankReducingMatrix(self, 10, 4)
+        MatrixMath.printMatrix(self, B)
+        print()
+        C = MatrixMath.matMult(self, B, A)
+        MatrixMath.printMatrix(self, A)
+        print()
+        MatrixMath.printMatrix(self, C)
 
+        print(f"rankA = {MatrixMath.matrixRank(self, A)}")
+        print(f"rankC = {MatrixMath.matrixRank(self, B)}")
+
+        A = MatrixMath.randomMatrix(self, 10, 4, -5, 5, int)
+        B = MatrixMath.randomMatrix(self, 4, 10, -5, 5, int)
+        C = MatrixMath.matMult(self, A, B)
+        print(f"rankC = {MatrixMath.matrixRank(self, B)}")
+
+        MatrixMath.randMatrixRowColRank(self, 10, 4, -5, 5, int)
 
     def lecture64(self):
         """Rank of added and matrices"""
