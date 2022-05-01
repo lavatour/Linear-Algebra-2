@@ -279,7 +279,6 @@ class MatrixMath():
         C = MatrixMath.matMult(self, A, B)
         return C
 
-
     """MATRIX OPERATIONS"""
 
     def addMatrices(self, A, B):
@@ -312,8 +311,13 @@ class MatrixMath():
 
     def size(self, A):
         """Return matrix size"""
+        #MatrixMath.printMatrix(self, A)
         rows = len(A)
-        cols = len(A[0])
+        #print("x", A[0], (type(A[0])))
+        if type(A[0]) == int:
+            cols = 1
+        else:
+            cols = len(A[0])
         return [rows, cols]
 
     def displayVector2D(self, V1=[0, 0], V2=[0, 0], V3=[0, 0], V4=[0, 0]):
@@ -468,7 +472,7 @@ class MatrixMath():
     def concatenateMatrices(self, A, B):
         sizeA = MatrixMath.size(self, A)
         sizeB = MatrixMath.size(self, B)
-        rowsA = rowsB = sizeA[0], sizeB[0]
+        rowsA,  rowsB = sizeA[0], sizeB[0]
         if rowsA != rowsB:
             print("Concatenation not possible. The number of rows in A must be the same as the number of rows in B")
             return
@@ -595,6 +599,7 @@ class MatrixMath():
 
 
     """MATRIX INFORMATION"""
+
     def normFrobenius(self, A):
       normFrob = np.linalg.norm(A, 'fro')
       return normFrob

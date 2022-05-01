@@ -12,6 +12,167 @@ class Lectures():
     def __init__(self):
         x = 1
 
+
+class Section6():
+    """Matrix rank"""
+
+    def lecture70(self):
+        """Is this vector in the span of this set
+        Determine whether this vector"""
+        V = [[1, 2, 3, 4]] #The inner bracket creates the list. The outer bracket tells python that this is a matrix.
+        V = MatrixMath.transpose(self, V)
+        """is in the span of these sets"""
+        S =  [[4, 3, 6, 2], [0, 4, 0, 1]]
+        S = MatrixMath.transpose(self, S)
+
+        T = [ [1, 2, 2, 2], [0, 0, 1, 2] ]
+        T = MatrixMath.transpose(self, T)
+
+        C = MatrixMath.concatenateMatrices(self, S, V)
+        print("The rank of V + S is greater than S, therefore V is not in the span of S")
+
+        D = MatrixMath.concatenateMatrices(self, T, V)
+        print("The rank of V + T is equal to the rank of T, therefore V is in the span of T")
+
+        rankV = MatrixMath.matrixRank(self, V)
+        rankS = MatrixMath.matrixRank(self, S)
+        rankC = MatrixMath.matrixRank(self, C)
+        rankT = MatrixMath.matrixRank(self, T)
+        rankD = MatrixMath.matrixRank(self, D)
+
+        print(f"rank(V) = {rankV}, rank(S) = {rankS}, rank(S + V) = {rankC}")
+        print(f"rank(V) = {rankV}, rank(T) = {rankT}, rnak(T + V) = {rankD}")
+
+    def lecture69(self):
+        """Making a matrix full rank by "shifting"
+        1. See the effects of "shifting" a matrix by lambdaI.
+        2. Appreciate the difficulty of knowing the right amounbt of shifting
+        A_Tilda = A + lambdaI       lambda is a scalar
+        A_Tilda, A and lambdaI must be square matrices
+        """
+
+        #Shifting a matrix: extreme example
+        """Zero matrix plus identity matrix"""
+        A = MatrixMath.zeroMatrix(self, 3)
+        I = MatrixMath.identityMatrix(self, 3)
+        C = MatrixMath.addMatrices(self, A, I)
+        rankA = MatrixMath.matrixRank(self, A)
+        rankI = MatrixMath.matrixRank(self, I)
+        rankC = MatrixMath.matrixRank(self, C)
+        print(f"rank(A) = {rankA}, rank(I) = {rankI}, rank(C) = {rankC}")
+
+        A = [[1, 3, -19], [5, -7, 59], [-5, 2, -24]]
+        MatrixMath.printMatrix(self, A)
+        print(f"rankA = {MatrixMath.matrixRank(self, A)}")
+        l = 0.01
+        lambdaI = l * MatrixMath.identityMatrix(self, 3)
+        MatrixMath.printMatrix(self, lambdaI)
+        print(f"rank(lambdaI) = {MatrixMath.matrixRank(self, lambdaI)}")
+        C = MatrixMath.addMatrices(self, A, lambdaI)
+        MatrixMath.printMatrix(self, C)
+        print(f"rank(C) = {MatrixMath.matrixRank(self, C)}")
+        print()
+
+        m, n = 30, 4
+        A = MatrixMath.randomMatrix(self, m, n, -5, 5, int)
+        B = MatrixMath.randomMatrix(self, n, m, -5, 5, int)
+        C = A@B
+        rankC = MatrixMath.matrixRank(self, C)
+        #MatrixMath.printMatrix(self, C)
+        print(f"Rank(C) = {rankC}")
+
+        # shift amount (l = lambda)
+        l = 0.01
+
+        #new matrix
+        B = C + l*MatrixMath.identityMatrix(self, m)
+        rankB = MatrixMath.matrixRank(self, B)
+        print(f"rank(B) = {rankB}")
+
+    def lecture68(self):
+        """Rank of multiplied and summed matrices.
+        Rules: rank of AB<=min( rank(A), rank(B) )
+               rank of A+B<=rank(A) + rank(B)
+
+        Generate 2 matrices (A and B), 2x5
+        compute ATxA and BTxB
+        Find the ranks of ATxA and BTxB
+        Find the rank of ATxAxBTxB
+        Find the rank of ATxA + BTxB
+        At start of each section predict the outcome of each part"""
+
+        #Generate 2 matrices (A and B), 2x5
+        A = MatrixMath.randomMatrix(self, 2, 5, -3, 3, int)
+        B = MatrixMath.randomMatrix(self, 2, 5, -3, 3, int)
+
+        #Compute ATxA and BTxB
+        AT = MatrixMath.transpose(self, A)
+        BT = MatrixMath.transpose(self, B)
+        ATxA = MatrixMath.matMult(self, AT, A)
+        BTxB = MatrixMath.matMult(self, BT, B)
+
+        #Find the ranks of ATxA and BTxB
+        """ATxA and BTxB will have dimensions of 5x5 and will be of rank 2"""
+        sizeATxA = MatrixMath.size(self, ATxA)
+        sizeBTxB = MatrixMath.size(self, BTxB)
+        rankATxA = MatrixMath.matrixRank(self, ATxA)
+        rankBTxB = MatrixMath.matrixRank(self, BTxB)
+        print(f"sizeATxA = {sizeATxA[0]}x{sizeATxA[1]}, rankATxA = {rankATxA}")
+        print(f"sizeBTxB = {sizeBTxB[0]}x{sizeBTxB[1]}, rankBTxB = {rankBTxB}")
+
+        #Find the ranks of ATxAXBTxB
+        """The rank of ATxAXBTxB will be 2"""
+        ATxAXBTxT = MatrixMath.matMult(self, ATxA, BTxB)
+        sizeATxAXBTxT = MatrixMath.size(self, ATxAXBTxT)
+        rankATxAXBTxT = MatrixMath.matrixRank(self, ATxAXBTxT)
+        print(f"sizeATxAXBTxT = {sizeATxAXBTxT[0]}x{sizeATxAXBTxT[1]}, rankATxAXBTxT = {rankATxAXBTxT}")
+
+        #Find the rank of ATxA + BTxB
+        """The rank of ATxA + BTxB will be up to 4. I could be 2, 3, or 4 depending on which rows or columns are
+        independent"""
+        ATxAPlusBTxB = MatrixMath.addMatrices(self, ATxA, BTxB)
+        sizeATxAPlusBTxB = MatrixMath.size(self, ATxAPlusBTxB)
+        rankATxAPlusBTxB = MatrixMath.matrixRank(self, ATxAPlusBTxB)
+        print(f"sizeATxAPlusBTxB = {sizeATxAPlusBTxB[0]}x{sizeATxAPlusBTxB[1]}, rankATxAPlusBTxB = {rankATxAPlusBTxB}")
+
+
+
+    def lecture67(self):
+        """Rank of Atransposa * A and A * A transpose
+        rank(A) = rank(A^T * A) = rand(A^T) = rank(A * A^T)"""
+
+        #A = MatrixMath.randomMatrix(self, 3, 3, 0, 5, int)
+        A = MatrixMath.randMatrixRowColRank(self, 3, 2, 0, 2, int)
+        T = MatrixMath.transpose(self, A)
+        rankA = MatrixMath.matrixRank(self, A)
+        rankT = MatrixMath.matrixRank(self, T)
+        MatrixMath.printMatrix(self, A)
+        print(f"rankA = {rankA}")
+        MatrixMath.printMatrix(self, T)
+        print(f"rankT = {rankT}")
+
+        ATxA = MatrixMath.matMult(self, T, A)
+        AxAT = MatrixMath.matMult(self, A, T)
+        rankATxA = MatrixMath.matrixRank(self, ATxA)
+        rankAxAT = MatrixMath.matrixRank(self, AxAT)
+        MatrixMath.printMatrix(self, ATxA)
+        print(f"rankATxA = {rankATxA}")
+        MatrixMath.printMatrix(self, AxAT)
+        print(f"rankAxAT = {rankAxAT}")
+
+        m, n = 14, 3
+        A = MatrixMath.randomMatrix(self, m, n, 0, 5, int)
+        T = MatrixMath.transpose(self, A)
+        ATxA = MatrixMath.matMult(self, T, A)
+        AxAT = MatrixMath.matMult(self, A, T)
+        size_ATxA = MatrixMath.size(self, ATxA)
+        size_AxAT = MatrixMath.size(self, AxAT)
+        rankATxA = MatrixMath.matrixRank(self, ATxA)
+        rankAxAT = MatrixMath.matrixRank(self, AxAT)
+
+        print(f"ATxA: {size_ATxA[0]}x{size_ATxA[1]}, rank = {rankATxA}")
+        print(f"AxAT: {size_AxAT[0]}x{size_AxAT[1]}, rank = {rankAxAT}")
+
     def lecture66(self):
         """Scalar multiplication and rank
         1. test whether matrix rank is invariant to scalar multiplication
@@ -185,7 +346,7 @@ class Lectures():
         MatrixMath.printMatrix(self, B)
         print(f"rank = {np.linalg.matrix_rank(B)} \n")
 
-
+class Section5():
     def lecture62(self):
         """Rank give information about the amount of information contained in a matrix.
         6 Things to know about rank
